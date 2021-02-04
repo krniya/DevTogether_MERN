@@ -1,3 +1,4 @@
 {
-    "mongoURI": "mongodb://127.0.0.1:27017/task-manager-api"
+    "mongoURI": "mongodb://127.0.0.1:27017/devTogetherDB",
+    "jwtSecret": "uchiha"
 }
