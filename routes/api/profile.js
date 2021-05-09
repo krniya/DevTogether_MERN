@@ -31,8 +31,38 @@ router.post('/', [auth, [
 ]], async (req, res) => {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
-        return res.status(400).json({ error: error.array() })
+        return res.status(400).json({ errors: errors.array() })
     }
+    const {
+        company,
+        website,
+        location,
+        bio,
+        status,
+        githubusername,
+        skills,
+        youtube,
+        facebook,
+        twitter,
+        instagram,
+        linkedin
+    } = res.body;
+
+    //Build profile Object
+    const profileFields = {}
+    profileFields.user = req.user.id
+    if (company) profileFields.company = company
+    if (website) profileFields.company = website
+    if (location) profileFields.company = location
+    if (bio) profileFields.company = bio
+    if (status) profileFields.company = status
+    if (githubusername) profileFields.company = githubusername
+    if (skills) profileFields.company = skills
+    if (youtube) profileFields.company = youtube
+    if (facebook) profileFields.company = facebook
+    if (twitter) profileFields.company = twitter
+    if (instagram) profileFields.company = instagram
+    if (linkedin) profileFields.company = linkedin
 })
 
 module.exports = router;
