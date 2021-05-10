@@ -52,17 +52,43 @@ router.post('/', [auth, [
     const profileFields = {}
     profileFields.user = req.user.id
     if (company) profileFields.company = company
-    if (website) profileFields.company = website
-    if (location) profileFields.company = location
-    if (bio) profileFields.company = bio
-    if (status) profileFields.company = status
-    if (githubusername) profileFields.company = githubusername
-    if (skills) profileFields.company = skills
-    if (youtube) profileFields.company = youtube
-    if (facebook) profileFields.company = facebook
-    if (twitter) profileFields.company = twitter
-    if (instagram) profileFields.company = instagram
-    if (linkedin) profileFields.company = linkedin
+    if (website) profileFields.website = website
+    if (location) profileFields.location = location
+    if (bio) profileFields.bio = bio
+    if (status) profileFields.status = status
+    if (githubusername) profileFields.githubusername = githubusername
+    if (skills) {
+        profileFields.skills = skills.split(',').map(skill => skill.trim())
+    }
+
+    //Build Social Object
+    profileFields.social = {}
+    if (youtube) profileFields.social.youtube = youtube
+    if (facebook) profileFields.social.facebook = facebook
+    if (twitter) profileFields.social.twitter = twitter
+    if (instagram) profileFields.social.instagram = instagram
+    if (linkedin) profileFields.social.linkedin = linkedin
+
+    try {
+        let profile = await Profile.findOne({ user: req.user.id })
+        if (profile) {
+            //Update
+            profile = await Profile.findOneAndUpdate(
+                { user: req.user.id },
+                { $set: profileFields },
+                { new: true }
+            )
+            return res.json(profile)
+
+        }
+        profile = new Profile(profileFields)
+        await profile.save()
+        res.json(profile)
+
+    } catch (err) {
+        console.error(err.message)
+        res.status(500).send("Server Error")
+    }
 })
 
 module.exports = router;
