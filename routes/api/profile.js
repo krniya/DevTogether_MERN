@@ -33,6 +33,7 @@ router.post('/', [auth, [
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() })
     }
+    console.log(res.body)
     const {
         company,
         website,
@@ -79,7 +80,6 @@ router.post('/', [auth, [
                 { new: true }
             )
             return res.json(profile)
-
         }
         profile = new Profile(profileFields)
         await profile.save()
